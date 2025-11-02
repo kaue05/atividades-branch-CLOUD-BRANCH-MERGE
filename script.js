@@ -30,3 +30,23 @@ addBtn.addEventListener('click', addTask);
 taskInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') addTask();
 });
+
+// Atualizar contadores
+function updateCounters() {
+    const total = taskList.children.length;
+    const completed = taskList.querySelectorAll('.completed').length;
+
+    document.getElementById('totalTasks').textContent = `Total: ${total}`;
+    document.getElementById('completedTasks').textContent = `Concluídas: ${completed}`;
+}
+
+// Modificar função addTask para atualizar contador
+const originalAddTask = addTask;
+addTask = function () {
+    originalAddTask();
+    updateCounters();
+};
+
+// Observer para detectar mudanças
+const observer = new MutationObserver(updateCounters);
+observer.observe(taskList, { childList: true, subtree: true, attributes: true });
