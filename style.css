@@ -63,6 +63,9 @@ h1 {
     border-left: 4px solid #4CAF50;
     border-radius: 4px;
     transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 #taskList li:hover {
@@ -85,4 +88,20 @@ h1 {
 
 .remove-btn:hover {
     background-color: #da190b;
+}
+
+#taskList li.completed {
+    opacity: 0.6;
+    background-color: #d4edda;
+    border-left-color: #28a745;
+}
+
+#taskList li.completed span {
+    text-decoration: line-through;
+    color: #666;
+}
+
+#taskList li span {
+    cursor: pointer;
+    flex: 1;
 }
