@@ -10,6 +10,13 @@ function addTask() {
 
     const li = document.createElement('li');
     li.textContent = taskText;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = '×';
+    removeBtn.className = 'remove-btn';
+    removeBtn.onclick = () => li.remove();
+
+    li.appendChild(removeBtn);
     taskList.appendChild(li);
 
     taskInput.value = '';
