@@ -50,3 +50,22 @@ addTask = function () {
 // Observer para detectar mudanças
 const observer = new MutationObserver(updateCounters);
 observer.observe(taskList, { childList: true, subtree: true, attributes: true });
+
+// Salvar tarefas no localStorage
+function saveTasks() {
+    const tasks = [];
+    taskList.querySelectorAll('li').forEach(li => {
+        tasks.push({
+            text: li.querySelector('span').textContent,
+            completed: li.classList.contains('completed')
+        });
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+// Modificar addTask para salvar
+const finalAddTask = addTask;
+addTask = function () {
+    finalAddTask();
+    saveTasks();
+};
