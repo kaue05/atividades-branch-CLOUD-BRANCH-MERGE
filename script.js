@@ -50,3 +50,62 @@ addTask = function () {
 // Observer para detectar mudanças
 const observer = new MutationObserver(updateCounters);
 observer.observe(taskList, { childList: true, subtree: true, attributes: true });
+
+// Salvar tarefas no localStorage
+function saveTasks() {
+    const tasks = [];
+    taskList.querySelectorAll('li').forEach(li => {
+        tasks.push({
+            text: li.querySelector('span').textContent,
+            completed: li.classList.contains('completed')
+        });
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+// Modificar addTask para salvar
+const finalAddTask = addTask;
+addTask = function () {
+    finalAddTask();
+    saveTasks();
+};
+
+// Carregar tarefas salvas
+function loadTasks() {
+    const saved = localStorage.getItem('tasks');
+    if (!saved) return;
+
+    const tasks = JSON.parse(saved);
+    tasks.forEach(task => {
+        const li = document.createElement('li');
+
+        const span = document.createElement('span');
+        span.textContent = task.text;
+        span.onclick = () => {
+            li.classList.toggle('completed');
+            saveTasks();
+        };
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '×';
+        removeBtn.className = 'remove-btn';
+        removeBtn.onclick = () => {
+            li.remove();
+            saveTasks();
+        };
+
+        li.appendChild(span);
+        li.appendChild(removeBtn);
+
+        if (task.completed) {
+            li.classList.add('completed');
+        }
+
+        taskList.appendChild(li);
+    });
+
+    updateCounters();
+}
+
+// Carregar ao iniciar
+loadTasks();
